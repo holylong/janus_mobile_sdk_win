@@ -28,12 +28,17 @@ endif()
 # if(IOS)
   # set(ENV_ARGS ${ENV_ARGS} -DCMAKE_OSX_SYSROOT=iphoneos -DCMAKE_OSX_ARCHITECTURES=armv7 -DCMAKE_XCODE_EFFECTIVE_PLATFORMS="-iphoneos;-iphonesimulator" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE="NO" -DCMAKE_CXX_COMPILER_WORKS=TRUE -DCMAKE_C_COMPILER_WORKS=TRUE -DCMAKE_MACOSX_BUNDLE=YES)
 # endif()
+#ExternalProject_Add(boringssl_proj
+#  PREFIX ${CMAKE_BINARY_DIR}/third_party/boringssl
+#  SOURCE_DIR ${THIRD_PARTY_DIR}/boringssl
+#  INSTALL_COMMAND mkdir -p ${CMAKE_BINARY_DIR}/third_party/lib && cp -rfv ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/ssl/libssl.a ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/crypto/libcrypto.a ${CMAKE_BINARY_DIR}/third_party/lib && mkdir -p ${CMAKE_BINARY_DIR}/third_party/include && cp -rfv ${THIRD_PARTY_DIR}/boringssl/include/openssl ${CMAKE_BINARY_DIR}/third_party/include
+#  CMAKE_ARGS ${ENV_ARGS} -DOPENSSL_SMALL=1)
 
 ExternalProject_Add(boringssl_proj
-  PREFIX ${CMAKE_BINARY_DIR}/third_party/boringssl
-  SOURCE_DIR ${THIRD_PARTY_DIR}/boringssl
-  INSTALL_COMMAND mkdir -p ${CMAKE_BINARY_DIR}/third_party/lib && cp -rfv ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/ssl/libssl.a ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/crypto/libcrypto.a ${CMAKE_BINARY_DIR}/third_party/lib && mkdir -p ${CMAKE_BINARY_DIR}/third_party/include && cp -rfv ${THIRD_PARTY_DIR}/boringssl/include/openssl ${CMAKE_BINARY_DIR}/third_party/include
-  CMAKE_ARGS ${ENV_ARGS} -DOPENSSL_SMALL=1)
+          PREFIX ${CMAKE_BINARY_DIR}/third_party/boringssl
+          SOURCE_DIR ${THIRD_PARTY_DIR}/boringssl
+          INSTALL_COMMAND winmkdir ${CMAKE_BINARY_DIR}/third_party/lib && copy ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/ssl/libssl.a ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/crypto/libcrypto.a ${CMAKE_BINARY_DIR}/third_party/lib && winmkdir ${CMAKE_BINARY_DIR}/third_party/include && copy ${THIRD_PARTY_DIR}/boringssl/include/openssl ${CMAKE_BINARY_DIR}/third_party/include
+          CMAKE_ARGS ${ENV_ARGS} -DOPENSSL_SMALL=1)
 
 ExternalProject_Add(curl_proj
   DEPENDS boringssl_proj

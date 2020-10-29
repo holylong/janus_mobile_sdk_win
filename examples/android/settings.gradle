@@ -1,4 +1,5 @@
 include ':app'
 
 include ':janus'
-project(':janus').projectDir = new File(settingsDir, '../../platforms/android/janus-client')
+//project(':janus').projectDir = new File(settingsDir, '../../platforms/android/janus-client')
+project(':janus').projectDir = new File(settingsDir, '../../platforms\\android\\janus-client')

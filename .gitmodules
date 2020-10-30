@@ -1,9 +1,12 @@
 [submodule "third_party\\boringssl"]
 	path = third_party\\boringssl
 	url = https://gitee.com/mirrors/boringssl
-[submodule "third_party\\json"]
-	path = third_party\\json
-	url = https://gitee.com/mirrors/cJSON
 [submodule "third_party\\curl"]
 	path = third_party\\curl
 	url = https://gitee.com/mirrors/curl
+[submodule "third_party/json"]
+	path = third_party/json
+	url = https://github.com/nlohmann/json
+[submodule "third_party/djinni"]
+	path = third_party/djinni
+	url = https://github.com/dropbox/djinni

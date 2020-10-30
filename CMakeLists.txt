@@ -37,7 +37,7 @@ endif()
 ExternalProject_Add(boringssl_proj
           PREFIX ${CMAKE_BINARY_DIR}/third_party/boringssl
           SOURCE_DIR ${THIRD_PARTY_DIR}/boringssl
-          INSTALL_COMMAND winmkdir ${CMAKE_BINARY_DIR}/third_party/lib && copy ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/ssl/libssl.a ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/crypto/libcrypto.a ${CMAKE_BINARY_DIR}/third_party/lib && winmkdir ${CMAKE_BINARY_DIR}/third_party/include && copy ${THIRD_PARTY_DIR}/boringssl/include/openssl ${CMAKE_BINARY_DIR}/third_party/include
+          INSTALL_COMMAND winmkdir ${CMAKE_BINARY_DIR}/third_party/lib && fastcp ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/ssl/libssl.a ${CMAKE_BINARY_DIR}/third_party/boringssl/src/boringssl_proj-build/crypto/libcrypto.a ${CMAKE_BINARY_DIR}/third_party/lib && winmkdir ${CMAKE_BINARY_DIR}/third_party/include && fastcp ${THIRD_PARTY_DIR}/boringssl/include/openssl ${CMAKE_BINARY_DIR}/third_party/include
           CMAKE_ARGS ${ENV_ARGS} -DOPENSSL_SMALL=1)
 
 ExternalProject_Add(curl_proj
@@ -80,6 +80,7 @@ add_dependencies(janus
 # Android SDK Library
 
 if(ANDROID)
+  message(WRANING "==>> android is ok djinni cpp")
   file(GLOB_RECURSE jni_srcs ${GENERATED_DIR}/jni/*.cpp ${THIRD_PARTY_DIR}/djinni/support-lib/jni/djinni_*.cpp)
 
   add_library(janus-android-sdk

@@ -60,7 +60,8 @@ public class Videoroom extends AppCompatActivity implements ServiceDelegate {
 
     String host = this.getIntent().getStringExtra("HOST");
     if(host == null) {
-      host = "http://10.0.2.2:8088/janus";
+      //host = "http://10.0.2.2:8088/janus";
+      host = "http://172.19.0.168:8088/janus";
     }
 
     JanusConfImpl conf = new JanusConfImpl();

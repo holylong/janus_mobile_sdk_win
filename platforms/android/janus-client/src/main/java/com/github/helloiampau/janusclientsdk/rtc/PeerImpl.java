@@ -105,7 +105,7 @@ public class PeerImpl extends Peer implements PeerConnection.Observer, DataChann
       VideoConstraints videoConstraints = constraints.getVideo();
 
       // creating video capturer
-      boolean isFront = videoConstraints.getCamera() == Camera.FRONT;
+      boolean isFront = videoConstraints.getCamera() == Camera.OTHER;
 
       String[] devices = this._cameraEnumerator.getDeviceNames();
       String device = Arrays.stream(devices).filter(current -> {

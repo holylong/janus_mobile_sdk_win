@@ -69,7 +69,7 @@ target_include_directories(janus
 target_link_libraries(janus
   curl
   ssl
-  crypto)
+  crypto log)
 
 add_dependencies(janus
   json_proj
@@ -81,8 +81,12 @@ add_dependencies(janus
 
 if(ANDROID)
   message(WRANING "==>> android is ok djinni cpp")
-  file(GLOB_RECURSE jni_srcs ${GENERATED_DIR}/jni/*.cpp ${THIRD_PARTY_DIR}/djinni/support-lib/jni/djinni_*.cpp)
 
+  #EXPERIMENTAL_AUTO_CPP_THREAD_ATTACH
+  message(STATUS "==>> add EXPERIMENTAL_AUTO_CPP_THREAD_ATTACH")
+
+  file(GLOB_RECURSE jni_srcs ${GENERATED_DIR}/jni/*.cpp ${THIRD_PARTY_DIR}/djinni/support-lib/jni/djinni_*.cpp)
+  add_definitions(-D EXPERIMENTAL_AUTO_CPP_THREAD_ATTACH)
   add_library(janus-android-sdk
     SHARED
     ${jni_srcs})
@@ -94,7 +98,7 @@ if(ANDROID)
     ${THIRD_PARTY_DIR}/djinni/support-lib/jni/)
 
   target_link_libraries(janus-android-sdk
-    janus)
+    janus log)
 
   add_dependencies(janus-android-sdk
     janus)

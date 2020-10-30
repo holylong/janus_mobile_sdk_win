@@ -3,9 +3,12 @@
 
 package com.github.helloiampau.janus.generated;
 
+import android.util.Log;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class ProtocolDelegate {
+    private static String TAG = "pd java_native_janus_log";
     public abstract void onReady();
 
     public abstract void onClose();
@@ -23,6 +26,7 @@ public abstract class ProtocolDelegate {
 
         private CppProxy(long nativeRef)
         {
+            Log.d(TAG, "CppProxy");
             if (nativeRef == 0) throw new RuntimeException("nativeRef is zero");
             this.nativeRef = nativeRef;
         }
@@ -30,11 +34,13 @@ public abstract class ProtocolDelegate {
         private native void nativeDestroy(long nativeRef);
         public void _djinni_private_destroy()
         {
+            Log.d(TAG, "_djinni_private_destroy");
             boolean destroyed = this.destroyed.getAndSet(true);
             if (!destroyed) nativeDestroy(this.nativeRef);
         }
         protected void finalize() throws java.lang.Throwable
         {
+            Log.d(TAG, "finalize");
             _djinni_private_destroy();
             super.finalize();
         }
@@ -42,6 +48,7 @@ public abstract class ProtocolDelegate {
         @Override
         public void onReady()
         {
+            Log.d(TAG, "onReady");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_onReady(this.nativeRef);
         }
@@ -50,6 +57,7 @@ public abstract class ProtocolDelegate {
         @Override
         public void onClose()
         {
+            Log.d(TAG, "onClose");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_onClose(this.nativeRef);
         }
@@ -58,6 +66,7 @@ public abstract class ProtocolDelegate {
         @Override
         public void onError(JanusError error, Bundle context)
         {
+            Log.d(TAG, "onError");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_onError(this.nativeRef, error, context);
         }
@@ -66,6 +75,7 @@ public abstract class ProtocolDelegate {
         @Override
         public void onEvent(JanusEvent event, Bundle context)
         {
+            Log.d(TAG, "onEvent");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_onEvent(this.nativeRef, event, context);
         }
@@ -74,6 +84,7 @@ public abstract class ProtocolDelegate {
         @Override
         public void onHangup(String reason)
         {
+            Log.d(TAG, "onHangup");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_onHangup(this.nativeRef, reason);
         }

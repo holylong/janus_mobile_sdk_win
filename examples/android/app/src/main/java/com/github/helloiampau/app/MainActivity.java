@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 public class MainActivity extends AppCompatActivity {
 
   EditText _editText;
@@ -13,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    CrashReport.initCrashReport(getApplicationContext(), "35d3349506", false);
     setContentView(R.layout.activity_main);
 
     this._editText = this.findViewById(R.id.url_text);

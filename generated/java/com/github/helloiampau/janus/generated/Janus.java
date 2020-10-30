@@ -3,9 +3,12 @@
 
 package com.github.helloiampau.janus.generated;
 
+import android.util.Log;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Janus {
+    private static String TAG = "Janus java_native_janus_log";
     public abstract void init();
 
     public abstract void close();
@@ -16,6 +19,7 @@ public abstract class Janus {
 
     public static Janus create(JanusConf conf, Platform platform, ProtocolDelegate delegate)
     {
+        Log.d(TAG, "create");
         return CppProxy.create(conf,
                                platform,
                                delegate);
@@ -47,14 +51,17 @@ public abstract class Janus {
         @Override
         public void init()
         {
+            Log.d(TAG, "init");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_init(this.nativeRef);
+            Log.d(TAG, "init ok");
         }
         private native void native_init(long _nativeRef);
 
         @Override
         public void close()
         {
+            Log.d(TAG, "close");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_close(this.nativeRef);
         }
@@ -63,6 +70,7 @@ public abstract class Janus {
         @Override
         public void hangup()
         {
+            Log.d(TAG, "hangup");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_hangup(this.nativeRef);
         }
@@ -71,6 +79,7 @@ public abstract class Janus {
         @Override
         public void dispatch(String command, Bundle payload)
         {
+            Log.d(TAG, "dispatch");
             assert !this.destroyed.get() : "trying to use a destroyed object";
             native_dispatch(this.nativeRef, command, payload);
         }

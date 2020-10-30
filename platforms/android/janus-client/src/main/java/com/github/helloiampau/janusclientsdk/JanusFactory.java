@@ -1,6 +1,7 @@
 package com.github.helloiampau.janusclientsdk;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.github.helloiampau.janus.generated.Janus;
 import com.github.helloiampau.janus.generated.JanusConf;
@@ -17,7 +18,10 @@ import java.util.Map;
 
 public class JanusFactory {
 
+  private static String TAG = "JanusFactory";
+
   static {
+    Log.d(TAG, "load library");
     System.loadLibrary("janus-android-sdk");
   }
 

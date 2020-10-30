@@ -6,6 +6,7 @@
 #include "native_bundle.hpp"
 #include "native_janus_error.hpp"
 #include "native_janus_event.hpp"
+#include "native_log.hpp"
 
 namespace djinni_generated {
 
@@ -18,11 +19,13 @@ NativeProtocolDelegate::JavaProxy::JavaProxy(JniType j) : Handle(::djinni::jniGe
 NativeProtocolDelegate::JavaProxy::~JavaProxy() = default;
 
 void NativeProtocolDelegate::JavaProxy::onReady() {
+    JANUS_LOGD("NativeProtocolDelegate::JavaProxy::onReady");
     auto jniEnv = ::djinni::jniGetThreadEnv();
     ::djinni::JniLocalScope jscope(jniEnv, 10);
     const auto& data = ::djinni::JniClass<::djinni_generated::NativeProtocolDelegate>::get();
     jniEnv->CallVoidMethod(Handle::get().get(), data.method_onReady);
     ::djinni::jniExceptionCheck(jniEnv);
+    JANUS_LOGD("NativeProtocolDelegate::JavaProxy::onReady end");
 }
 void NativeProtocolDelegate::JavaProxy::onClose() {
     auto jniEnv = ::djinni::jniGetThreadEnv();

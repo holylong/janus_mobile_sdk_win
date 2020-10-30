@@ -7,6 +7,7 @@
 #include "native_janus_conf.hpp"
 #include "native_platform.hpp"
 #include "native_protocol_delegate.hpp"
+#include "native_log.hpp"
 
 namespace djinni_generated {
 
@@ -17,6 +18,7 @@ NativeJanus::~NativeJanus() = default;
 
 CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_nativeDestroy(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef)
 {
+    JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_nativeDestroy");
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         delete reinterpret_cast<::djinni::CppProxyHandle<::Janus::Janus>*>(nativeRef);
@@ -25,15 +27,20 @@ CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024C
 
 CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1init(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef)
 {
+    JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1init");
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::Janus::Janus>(nativeRef);
+        JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1init objectFromHandleAddress ok");
         ref->init();
+        JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1init init ok");
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, )
+    JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1init ok");
 }
 
 CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1close(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef)
 {
+    JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1close");
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::Janus::Janus>(nativeRef);
@@ -43,6 +50,7 @@ CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024C
 
 CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1hangup(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef)
 {
+    JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1hangup");
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::Janus::Janus>(nativeRef);
@@ -52,6 +60,7 @@ CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024C
 
 CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1dispatch(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jstring j_command, jobject j_payload)
 {
+    JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_native_1dispatch");
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::Janus::Janus>(nativeRef);
@@ -62,6 +71,7 @@ CJNIEXPORT void JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024C
 
 CJNIEXPORT jobject JNICALL Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_create(JNIEnv* jniEnv, jobject /*this*/, jobject j_conf, jobject j_platform, jobject j_delegate)
 {
+    JANUS_LOGD("Java_com_github_helloiampau_janus_generated_Janus_00024CppProxy_create");
     try {
         DJINNI_FUNCTION_PROLOGUE0(jniEnv);
         auto r = ::Janus::Janus::create(::djinni_generated::NativeJanusConf::toCpp(jniEnv, j_conf),

@@ -3,6 +3,7 @@
 #include "janus/bundle_impl.h"
 #include "janus/janus_error.hpp"
 #include "janus/janus_commands.hpp"
+#include "janus/janus_sdk_log.h"
 
 namespace Janus {
 
@@ -11,6 +12,7 @@ namespace Janus {
   namespace Messages {
 
     nlohmann::json create(const std::string& transaction) {
+        JANUS_SDK_LOGD("Janus::Messages::create");
       return {
         { "janus", JanusCommands::CREATE },
         { "transaction", transaction }
@@ -18,6 +20,7 @@ namespace Janus {
     }
 
     nlohmann::json attach(const std::string& transaction, const std::string& plugin) {
+        JANUS_SDK_LOGD("Janus::Messages::attach");
       return {
         { "janus", JanusCommands::ATTACH },
         { "plugin", plugin },
@@ -26,6 +29,7 @@ namespace Janus {
     }
 
     nlohmann::json destroy(const std::string& transaction) {
+        JANUS_SDK_LOGD("Janus::Messages::destroy");
       return {
         { "janus", JanusCommands::DESTROY },
         { "transaction", transaction }
@@ -33,6 +37,7 @@ namespace Janus {
     }
 
     nlohmann::json trickle(const std::string& transaction, int64_t handleId, const std::string& sdpMid, int32_t sdpMLineIndex, const std::string& candidate) {
+        JANUS_SDK_LOGD("Janus::Messages::trickle");
       return {
         { "janus", JanusCommands::TRICKLE },
         { "transaction", transaction },
@@ -42,6 +47,7 @@ namespace Janus {
     }
 
     nlohmann::json trickleCompleted(const std::string& transaction, int64_t handleId) {
+        JANUS_SDK_LOGD("Janus::Messages::trickleCompleted");
       return {
         { "janus", JanusCommands::TRICKLE },
         { "transaction", transaction },
@@ -51,6 +57,7 @@ namespace Janus {
     }
 
     nlohmann::json message(const std::string& transaction, int64_t handleId, nlohmann::json body) {
+        JANUS_SDK_LOGD("Janus::Messages::message");
       body["janus"] = "message";
       body["transaction"] = transaction;
       body["handle_id"] = handleId;
@@ -59,6 +66,7 @@ namespace Janus {
     }
 
     nlohmann::json hangup(const std::string& transaction, int64_t handleId) {
+        JANUS_SDK_LOGD("Janus::Messages::hangup");
       return {
         { "janus", JanusCommands::HANGUP },
         { "transaction", transaction },
@@ -71,6 +79,7 @@ namespace Janus {
   /* Janus API */
 
   JanusApi::JanusApi(const std::shared_ptr<Random>& random, const std::shared_ptr<TransportFactory>& transportFactory) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::JanusApi");
     this->_transportFactory = transportFactory;
     this->_random = random;
   }
@@ -80,6 +89,7 @@ namespace Janus {
   }
 
   void JanusApi::init(const std::shared_ptr<JanusConf>& conf, const std::shared_ptr<Platform>& platform, const std::shared_ptr<ProtocolDelegate>& delegate) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::init");
     this->readyState(ReadyState::INIT);
 
     this->_transport = this->_transportFactory->create(conf->url(), this->shared_from_this());
@@ -92,6 +102,7 @@ namespace Janus {
   }
 
   void JanusApi::dispatch(const std::string& command, const std::shared_ptr<Bundle>& payload) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::dispatch");
     payload->setString("command", command);
     auto transaction = this->_random->generate();
     auto handleId = this->handleId(payload);
@@ -146,11 +157,13 @@ namespace Janus {
   }
 
   void JanusApi::hangup() {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::hangup");
     auto bundle = Bundle::create();
     this->dispatch(JanusCommands::HANGUP, bundle);
   }
 
   void JanusApi::close() {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::close");
     if(this->readyState() != ReadyState::READY) {
       return;
     }
@@ -162,6 +175,7 @@ namespace Janus {
   }
 
   void JanusApi::onMessage(const nlohmann::json& message, const std::shared_ptr<Bundle>& context) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::onMessage");
     auto header = message.value("janus", "");
     auto str = message.dump();
 
@@ -243,14 +257,17 @@ namespace Janus {
   }
 
   void JanusApi::onOffer(const std::string& sdp, const std::shared_ptr<Bundle>& context) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::onOffer");
     this->_plugin->onOffer(sdp, context);
   }
 
   void JanusApi::onAnswer(const std::string& sdp, const std::shared_ptr<Bundle>& context) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::onAnswer");
     this->_plugin->onAnswer(sdp, context);
   }
 
   void JanusApi::onIceCandidate(const std::string& mid, int32_t index, const std::string& sdp, int64_t id) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::onIceCandidate");
     auto bundle = Bundle::create();
     bundle->setString("sdpMid", mid);
     bundle->setInt("sdpMLineIndex", index);
@@ -261,6 +278,7 @@ namespace Janus {
   }
 
   void JanusApi::onIceCompleted(int64_t id) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::onIceCompleted");
     auto bundle = Bundle::create();
     bundle->setInt("handleId", id);
 
@@ -268,21 +286,26 @@ namespace Janus {
   }
 
   ReadyState JanusApi::readyState() {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::readyState");
     std::lock_guard<std::mutex> lock(this->_readyStateMutex);
 
     return this->_readyState;
   }
 
   void JanusApi::readyState(ReadyState readyState) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::readyState");
     std::lock_guard<std::mutex> lock(this->_readyStateMutex);
     this->_readyState = readyState;
+    JANUS_SDK_LOGD("Janus::Messages::JanusApi::readyState end");
   }
 
   int64_t JanusApi::handleId(const std::shared_ptr<Bundle>& context) {
+      JANUS_SDK_LOGD("Janus::Messages::handleId");
     return context->getInt("handleId", this->_handleId);
   }
 
   void JanusApi::onCommandResult(const nlohmann::json& body, const std::shared_ptr<Bundle>& context) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::onCommandResult");
     auto transaction = this->_random->generate();
     auto handleId = this->handleId(context);
 
@@ -291,6 +314,7 @@ namespace Janus {
   }
 
   void JanusApi::onPluginEvent(const std::shared_ptr<JanusEvent>& event, const std::shared_ptr<Bundle>& context) {
+      JANUS_SDK_LOGD("Janus::Messages::JanusApi::onPluginEvent");
     this->_delegate->onEvent(event, context);
   }
 
